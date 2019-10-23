@@ -53,7 +53,7 @@ class DataGrabber():
     # Combines data from all of the different spreadsheets
     def concatinateData(self, arrays):
         arrays = tuple(arrays)
-        return list(np.concatenate(arrays, axis=0))
+        return np.concatenate(arrays, axis=0)
 
     def train_test_split(self,X,Y):
         X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size=0.1)
@@ -77,9 +77,9 @@ class DataGrabber():
 if __name__ == '__main__':
     dg = DataGrabber()
     ((X_train, Y_train), (X_test, Y_test)) = dg.getData()
-    #print(X_train)
-    #print(Y_train)
-    #print(X_test)
-    #print(Y_test)
+    print(X_train.shape)
+    print(Y_train.shape)
+    print(X_test.shape)
+    print(Y_test.shape)
     pickle.dump((X_train,Y_train), open("train.pickle", "wb"))
     pickle.dump((X_test,Y_test), open("test.pickle", "wb"))
