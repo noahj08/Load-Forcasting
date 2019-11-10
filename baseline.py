@@ -1,94 +1,13 @@
 #!/usr/bin/env python
-# coding: utf-8
+import pickle
+import algorithms
+import visualizer
 
-# In[1]:
-
-
-import pandas as pd
-train = pd.read_pickle('train.pickle')
-test = pd.read_pickle('test.pickle')
-
-
-# In[2]:
-
-
-train
-
-
-# In[3]:
-
-
-import numpy as np
-import matplotlib.pyplot as plt 
-
-
-# In[4]:
-
-
-import seaborn as sns
-import statsmodels.formula.api as smf
-from sklearn.linear_model import LinearRegression
-from sklearn import metrics
-from sklearn.cross_validation import train_test_split
-
-
-# In[5]:
-
-
-get_ipython().run_line_magic('matplotlib', 'inline')
-
-
-# In[16]:
-
-
-train_x = train[0]
-train_y = train[1]
-test_x = test[0]
-test_y = test[1]
-
-
-# In[22]:
-
-
-lm = LinearRegression()
-
-
-# In[23]:
-
-
-lm.fit(train_x, train_y)
-
-
-# In[25]:
-
-
-predictions = lm.predict(test_x)
-
-
-# In[30]:
-
-
-plt.scatter(test_y,predictions)
-plt.title("Actual vs. Predicted Demand (kW)")
-plt.xlabel("Actual (kW)")
-plt.ylabel("Predicted (kW)")
-plt.show()
-
-
-# In[29]:
-
-
-metrics.r2_score(test_y, predictions)
-
-
-# In[31]:
-
-
-metrics.mean_squared_error(test_y, predictions)
-
-
-# In[ ]:
-
-
-
-
+(X_train, Y_train) = pickle.load(open('train.pickle','rb'))
+(X_test, Y_test) = pickle.load(open("test.pickle", 'rb'))
+(predictions, r2_score, mse_loss) = algorithms.linear_regression(X_train,\
+        Y_train, X_test, Y_test)
+visualizer.scatter(Y_test, predictions, "Actual vs. Predicted Demand (kW)",\
+        "Actual (kW)", "Predicted (kW)", "baseline.jpg")
+print(f"R2 Score = {r2_score}")
+print(f"Mean Squared Error Loss = {mse_loss}")
