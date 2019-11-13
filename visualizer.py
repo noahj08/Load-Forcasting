@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
+from sklearn import metrics
 
 #Algorithm-specific visualizers
 
 def visualize_regression(output, Y_test):
-    (predictions, r2_score, mse_loss, coefficients) = output
+    (predictions, coefficients) = output
+    r2_score = metrics.r2_score(Y_test, predictions)
+    mse_loss = metrics.mean_squared_error(Y_test, predictions)
     scatter(Y_test, predictions, "Actual vs. Predicted Demand (kW)",\
             "Actual (kW)", "Predicted (kW)", "baseline.jpg")
     print(f"R2 Score = {r2_score}")
