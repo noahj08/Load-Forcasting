@@ -1,5 +1,18 @@
 import matplotlib.pyplot as plt
 
+#Algorithm-specific visualizers
+
+def visualize_regression(output, Y_test):
+    (predictions, r2_score, mse_loss, coefficients) = output
+    scatter(Y_test, predictions, "Actual vs. Predicted Demand (kW)",\
+            "Actual (kW)", "Predicted (kW)", "baseline.jpg")
+    print(f"R2 Score = {r2_score}")
+    print(f"Mean Squared Error Loss = {mse_loss}")
+    print(f"Coefficients = {coefficients}")
+
+####################################################################################
+# HELPER FUNCTIONS
+
 # Scatter feature number i from an X array (i.e. X_train or X_test)
 def scatter_feature(X,i,title, xlabel, ylabel, filename, show=True):
     y = X[i]
