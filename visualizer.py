@@ -3,15 +3,21 @@ from sklearn import metrics
 
 #Algorithm-specific visualizers
 
-def visualize_regression(output, Y_test):
+def visualize_linear_regression(output, Y_test):
     (predictions, coefficients) = output
     r2_score = metrics.r2_score(Y_test, predictions)
     mse_loss = metrics.mean_squared_error(Y_test, predictions)
-    scatter(Y_test, predictions, "Actual vs. Predicted Demand (kW)",\
+    scatter(Y_test, predictions, "Actual vs. Predicted Demand for Linear Regression (kW)",\
             "Actual (kW)", "Predicted (kW)", "baseline.jpg")
     print(f"R2 Score = {r2_score}")
     print(f"Mean Squared Error Loss = {mse_loss}")
     print(f"Coefficients = {coefficients}")
+
+def visualize_NN_regression(output, Y_test):
+    (predictions, loss) = output
+    scatter(Y_test, predictions, "Actual vs. Predicted Demand (kW) for Neural Network Regression",\
+            "Actual (kW)", "Predicted (kW)", "neural_net.jpg")
+    print(f"Mean Squared Error Loss = {loss}")
 
 ####################################################################################
 # HELPER FUNCTIONS

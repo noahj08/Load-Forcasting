@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import sys
 import pickle
 import algorithms
 import visualizer
@@ -24,6 +25,14 @@ class Runner():
            self.visualize(output, Y_test)
 
 if __name__ == '__main__':
-    #runner = Runner(algorithms.linear_regression, None, visualizer.visualize_regression)
-    runner = Runner(algorithms.NN_regression, None, None)
+    assert(len(sys.argv) == 2)
+    mode = sys.argv[1]
+    linear_names = ["linear", "linear regression", "linear_regression, baseline"]
+    nn_names = ["nn", "nn_regression", "nn regression", "neural net", "neural_net"]
+    if mode.lower() in linear_names:
+        runner = Runner(algorithms.linear_regression, None, visualizer.visualize_linear_regression)
+    elif mode.lower() in nn_names:
+        runner = Runner(algorithms.NN_regression, None, visualizer.visualize_NN_regression)
+    else:
+        raise(f"IDK what the mode {mode} is. Pls change ur input parameter")
     runner.run()
