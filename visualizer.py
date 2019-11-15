@@ -18,6 +18,12 @@ def visualize_NN_regression(output, Y_test):
     scatter(Y_test, predictions, "Actual vs. Predicted Demand (kW) for Neural Network Regression",\
             "Actual (kW)", "Predicted (kW)", "neural_net.jpg")
     print(f"Mean Squared Error Loss = {loss}")
+    
+def visualize_svr(output, Y_test):
+    (predictions, loss) = output
+    scatter(Y_test, predictions, "Actual vs. Predicted Demand (kW) for Support Vector Regression",\
+            "Actual (kW)", "Predicted (kW)", "svr.pdf")
+    print(f"Mean Squared Error Loss = {loss}")
 
 ####################################################################################
 # HELPER FUNCTIONS
