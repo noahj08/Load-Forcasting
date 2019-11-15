@@ -44,11 +44,15 @@ if __name__ == '__main__':
 
     linear_names = ["linear", "linear regression", "linear_regression, baseline"]
     nn_names = ["nn", "nn_regression", "nn regression", "neural net", "neural_net"]
+    svr_names = ["svr", "svm", "support vector regression"]
+
 
     if mode.lower() in linear_names:
         runner = Runner(algorithms.linear_regression, feature, visualizer.visualize_linear_regression)
     elif mode.lower() in nn_names:
         runner = Runner(algorithms.NN_regression, feature, visualizer.visualize_NN_regression)
+    elif mode.lower() in svr_names:
+        runner = Runner(algorithms.svr, None, visualizer.visualize_svr)
     else:
         raise(f"IDK what the mode {mode} is. Pls change ur input parameter")
     runner.run()
