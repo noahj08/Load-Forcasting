@@ -20,5 +20,12 @@ def NN_regression(X_train, Y_train, X_test, Y_test, batch_size=100, filepath="nn
     loss = nn.evaluate(X_test,Y_test)
     return (predictions,loss)
 
+def svr(X_train, Y_train, X_test, Y_test):
+    clf = SVR(gamma='scale', C=1.0, epsilon=0.2,verbose=True)
+    clf.fit(X_train, Y_train)
+    predictions = clf.predict(X_test)
+    score = sklearn.metrics.mean_squared_error(Y_test, predictions)
+    return (predictions, score)
+
 ####################################################################################
 # HELPER FUNCTIONS
