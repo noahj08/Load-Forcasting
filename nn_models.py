@@ -18,7 +18,7 @@ class NN(ABC):
         pass
 
     # Trains the NN and saves model parameters to be loaded in regress
-    def train(self, X_train, Y_train, X_test, Y_test, batch_size, filepath):
+    def train(self, X_train, Y_train, X_test, Y_test, batch_size, epochs, filepath):
         #X_train = X_train.reshape(-1,1)
         #Y_train = Y_train.reshape(-1,1)
         #X_test = X_test.reshape(-1,1)
@@ -27,7 +27,7 @@ class NN(ABC):
             raise "You must call build_model first!"
         checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='min', period=10)
         callbacks_list = [checkpoint]
-        self.model.fit(X_train,Y_train, epochs=200, batch_size=batch_size,callbacks=callbacks_list, validation_data=(X_test, Y_test))
+        self.model.fit(X_train,Y_train, epochs=epochs, batch_size=batch_size,callbacks=callbacks_list, validation_data=(X_test, Y_test))
         #self.model.fit(self.xscaler.transform(X_train),self.yscaler.transform(Y_train), epochs=30, batch_size=batch_size,callbacks=callbacks_list, validation_data=(self.xscaler.transform(X_test), self.yscaler.transform(Y_test)))
 
     def predict(self, X):
@@ -51,8 +51,8 @@ class BasicE2ENN(NN):
     def build_model(self, X_train, Y_train, input_shape):
         X_train = X_train.reshape(-1,1)
         Y_train = Y_train.reshape(-1,1)
-        self.xscaler.fit(X_train)
-        self.yscaler.fit(Y_train)
+        #self.xscaler.fit(X_train)
+        #self.yscaler.fit(Y_train)
         self.model.add(Dense(50, input_shape=input_shape))
         #self.model.add(Activation('tanh'))
         self.model.add(Dense(40))
@@ -65,3 +65,25 @@ class BasicE2ENN(NN):
         #self.model.add(Activation('tanh'))
         self.model.add(Dense(1))
         self.model.compile(loss='mean_squared_error',optimizer='adam')
+
+class AutoEncoder(NN):
+
+    def __init__(self):
+        super().__init__()
+        self.encoder = Sequential()
+        self.decoder = Sequential()
+
+    def build_model(self, X_train, input_shape, compression_dim):
+        X_train = X_train.reshape(-1,1)
+        self.encoder.add(Dense(50, input_shape=input_shape))
+        self.encoder.add(Dense(40))
+        self.encoder.add(Dense(compression_dim))
+        self.decoder.add(Dense(40, input_shape = (compression_dim,)))
+        self.decoder.add(Dense(50))
+        self.decoder.add(Dense(input_shape[0]))
+        self.model.add(self.encoder)
+        self.model.add(self.decoder)
+        self.model.compile(loss='mean_squared_error',optimizer='adam')
+
+    def encode(self, X):
+        return self.encoder.predict(X)

@@ -27,6 +27,8 @@ class Runner():
                 (X_train, X_test) = [features.doLLE(X) for X in (X_train, X_test)]
             elif self.featureExt.lower() == "tsne":
                 (X_train, X_test) = [features.doTSNE(X) for X in (X_train, X_test)]
+            elif self.featureExt.lower() == "autoencoder":
+                (X_train, X_test) = features.autoEncode((X_train, X_test))
 
         # Run algorithm
         output = self.algo(X_train,Y_train, X_test, Y_test)

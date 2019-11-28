@@ -12,10 +12,10 @@ def linear_regression(X_train, Y_train, X_test, Y_test):
     return (predictions, coefficients)
 
 # Note that NN regression reshapes the input arrays to make them easier to batch
-def NN_regression(X_train, Y_train, X_test, Y_test, batch_size=100, filepath="nn_models/best_basicE2E.nn"):
+def NN_regression(X_train, Y_train, X_test, Y_test, batch_size=100, epochs=50, filepath="nn_models/best_basicE2E.nn"):
     nn = nn_models.BasicE2ENN()
     nn.build_model(X_train, Y_train, tuple(np.asarray(X_train).shape[1:]))
-    nn.train(X_train, Y_train, X_test, Y_test, batch_size, filepath)
+    nn.train(X_train, Y_train, X_test, Y_test, batch_size, epochs, filepath)
     predictions = nn.predict(X_test)
     loss = nn.evaluate(X_test,Y_test)
     return (predictions,loss)
