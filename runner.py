@@ -18,18 +18,18 @@ class Runner():
         (X_test, Y_test) = pickle.load(open("test.pickle", 'rb'))
         # Extract features
         if self.featureExt:
-            print(self.featureExt)
-            if self.featureExt.lower() == "pca":
+            if "tog" in self.featureExt.lower():
+                (X_train, X_test) = [features.doTog(X) for X in (X_train, X_test)]
+            if "sep" in self.featureExt.lower():
+                (X_train, X_test) = [features.doSep(X) for X in (X_train, X_test)]
+            if "pca" in self.featureExt.lower():
                 (X_train, X_test) = [features.doPCA(X) for X in (X_train, X_test)]
-            elif self.featureExt.lower() == "ica":
+            if "ica" in self.featureExt.lower():
                 (X_train, X_test) = [features.doICA(X) for X in (X_train, X_test)]
-            elif self.featureExt.lower() == "lle":
+            if "lle" in self.featureExt.lower():
                 (X_train, X_test) = [features.doLLE(X) for X in (X_train, X_test)]
-            elif self.featureExt.lower() == "tsne":
+            if "tsne" in self.featureExt.lower():
                 (X_train, X_test) = [features.doTSNE(X) for X in (X_train, X_test)]
-            elif self.featureExt.lower() == "autoencoder":
-                (X_train, X_test) = features.autoEncode((X_train, X_test))
-
         # Run algorithm
         output = self.algo(X_train,Y_train, X_test, Y_test)
         # Visualize

@@ -4,9 +4,8 @@ import sys
 import pickle
 import algorithms
 import visualizer
-import nn_models
-
 import numpy as np
+
 from sklearn.manifold import TSNE
 from sklearn.manifold import LocallyLinearEmbedding as LLE
 from sklearn.decomposition import PCA
@@ -31,13 +30,22 @@ def doTSNE(data):
     tsne_data = TSNE(n_components=3).fit_transform(data)
     return tsne_data
 
-def autoEncode(data, reduced_dim=28, batch_size=100, epochs=20, filepath="nn_models/best_AutoEncoder.ae"):
-    X_train, X_test = data
-    ae = nn_models.AutoEncoder()
-    ae.build_model(X_train, tuple(np.asarray(X_train).shape[1:]), reduced_dim)
-    ae.train(X_train, X_train, X_train, X_train, batch_size, epochs, filepath)
-    X_train_enc = ae.encode(X_train)
-    X_test_enc = ae.encode(X_test)
-    print(X_train)
-    print(X_train_enc)
-    return (X_train_enc, X_test_enc)
+def doTog(data):
+    ret = np.zeros((data.shape[0], data.shape[1]+2))
+    for i in range(len(data)):  
+        var = data[i]
+        var = np.append(data[i], data[i][6]*data[i][7]) #DA Energy, Congestion coefficients
+        var2 = np.append(var, data[i][10]*data[i][11]) #RT Energy, Congestion coefficients
+        ret[i] = var2
+    return ret
+
+def doSep(data):
+    ret = np.zeros((data.shape[0], data.shape[1]+4))
+    for i in range(len(data)):  
+        var = data[i]
+        var = np.append(data[i], data[i][6]*data[i][10]) #DA Energy, RT Energy coefficients
+        var2 = np.append(var, data[i][7]*data[i][11]) #DA Congestion, RT Congestion coefficients
+        var3 = np.append(var2, data[i][8]*data[i][12]) #marginal loss component
+        var4 = np.append(var3, data[i][5]*data[i][9]) #locational marginal price
+        ret[i] = var4
+    return ret
